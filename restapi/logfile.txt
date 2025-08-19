@@ -1,0 +1,1047 @@
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+********* QUERY **********
+SET statement_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET lock_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET idle_in_transaction_session_timeout = 0;
+**************************
+
+SET
+********* QUERY **********
+SET client_encoding = 'UTF8';
+**************************
+
+SET
+********* QUERY **********
+SET standard_conforming_strings = on;
+**************************
+
+SET
+********* QUERY **********
+SELECT pg_catalog.set_config('search_path', '', false);
+**************************
+
+ set_config 
+------------
+ 
+(1 row)
+
+********* QUERY **********
+SET check_function_bodies = false;
+**************************
+
+SET
+********* QUERY **********
+SET xmloption = content;
+**************************
+
+SET
+********* QUERY **********
+SET client_min_messages = warning;
+**************************
+
+SET
+********* QUERY **********
+SET row_security = off;
+**************************
+
+SET
+********* QUERY **********
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+**************************
+
+CREATE EXTENSION
+********* QUERY **********
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+**************************
+
+COMMENT
+********* QUERY **********
+CREATE FUNCTION public.fn_trig_moment_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ 
+begin
+new.id = (select count(*) + 1 from moments where username = new.username);
+return new;
+end;
+$$;
+**************************
+
+CREATE FUNCTION
+********* QUERY **********
+ALTER FUNCTION public.fn_trig_moment_id() OWNER TO mkm_user;
+**************************
+
+ALTER FUNCTION
+********* QUERY **********
+SET default_tablespace = '';
+**************************
+
+SET
+********* QUERY **********
+SET default_table_access_method = heap;
+**************************
+
+SET
+********* QUERY **********
+CREATE TABLE public.moments (
+    username character varying(40) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(2000) NOT NULL,
+    moment_date date NOT NULL,
+    image_filename character varying(40),
+    image_caption character varying(100),
+    feelings character varying(20)[],
+    image_data bytea,
+    id bigint NOT NULL,
+    created_date timestamp with time zone DEFAULT now() NOT NULL,
+    last_modified_date timestamp with time zone DEFAULT now() NOT NULL
+);
+**************************
+
+CREATE TABLE
+********* QUERY **********
+ALTER TABLE public.moments OWNER TO mkm_user;
+**************************
+
+ALTER TABLE
+********* QUERY **********
+CREATE TABLE public.users (
+    username character varying(40) NOT NULL,
+    fullname character varying(100) NOT NULL,
+    birthdate date NOT NULL,
+    emailid character varying(100) NOT NULL,
+    password_hash character varying(100) NOT NULL,
+    account_creation_time timestamp with time zone NOT NULL
+);
+**************************
+
+CREATE TABLE
+********* QUERY **********
+ALTER TABLE public.users OWNER TO mkm_user;
+**************************
+
+ALTER TABLE
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_pkey PRIMARY KEY (id, username);
+**************************
+
+ALTER TABLE
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT unique_username UNIQUE (username);
+**************************
+
+ALTER TABLE
+********* QUERY **********
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (emailid);
+**************************
+
+ALTER TABLE
+********* QUERY **********
+CREATE TRIGGER trig_moment_id BEFORE INSERT ON public.moments FOR EACH ROW EXECUTE FUNCTION public.fn_trig_moment_id();
+**************************
+
+CREATE TRIGGER
+********* QUERY **********
+ALTER TABLE ONLY public.moments
+    ADD CONSTRAINT moments_username_fkey FOREIGN KEY (username) REFERENCES public.users(username);
+**************************
+
+ALTER TABLE

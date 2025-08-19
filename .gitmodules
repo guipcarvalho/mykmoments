@@ -1,9 +1,10 @@
 [submodule "restapi/external/libpqxx"]
 	path = restapi/external/libpqxx
-	url = git@github.com:jtv/libpqxx.git
+	url = https://github.com/jtv/libpqxx.git
 [submodule "restapi/external/Crow"]
 	path = restapi/external/Crow
-	url = git@github.com:CrowCpp/Crow.git
+	url = https://github.com/CrowCpp/Crow.git
 [submodule "restapi/external/jwt-cpp"]
 	path = restapi/external/jwt-cpp
-	url = git@github.com:Thalhammer/jwt-cpp.git
+	url = https://github.com/Thalhammer/jwt-cpp.git
+
