@@ -31,7 +31,7 @@ sudo apt-get install postgresql postgresql-contrib
 
 # Cloning repo
 ```
-git clone --recurse-submodules https://github.com/kiner-shah/mykmoments.git
+git clone --recurse-submodules https://github.com/Shriram-Vatturkar/mykmoments.git
 cd mykmoments
 git submodule init
 git submodule update --init --depth 3 --recursive --jobs 4
