@@ -1,0 +1,50 @@
+# Git (but keep submodule contents)
+.git/
+.gitignore
+.gitmodules
+!restapi/external/
+
+# Build directories (keep SSR build for runtime)
+restapi/build/
+dist/
+node_modules/
+!build/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logfile.txt
+
+# Documentation (except README)
+*.md
+!README.md
+
+# Docker files (we need them but avoid recursion)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Local development files
+.env
+.env.local
+.env.development
+.env.production
+
+# Temporary files
+tmp/
+temp/
+.tmp
+
+# Package manager files
+yarn.lock
+npm-debug.log* 

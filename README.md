@@ -91,9 +91,87 @@ make
 ./MyKMomentsRestAPI
 ```
 
-# Running front end
-## Install required packages and run the frontend locally
+# 🚀 Quick Start (Recommended)
+
+The fastest way to get MyKMoments running is with Docker. **No manual dependency installation required!**
+
+## Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) (20.10+)
+- [Docker Compose](https://docs.docker.com/compose/install/) (2.0+)
+- Git
+
+## 1️⃣ Clone and Start
+
+```bash
+# Clone the repository with all dependencies
+git clone --recurse-submodules https://github.com/Shriram-Vatturkar/mykmoments.git
+cd mykmoments
+
+# Start the application (first run will take 3-5 minutes to build)
+docker-compose up --build
+```
+
+## 2️⃣ Access the Application
+
+Once you see "Crow/1.2.1 server is running" in the logs:
+
+- **🌐 Web Application**: http://localhost:8080
+- **📱 All features available**: Create account, login, add moments, upload images
+
+## 3️⃣ Stop the Application
+
+```bash
+# Press Ctrl+C in the terminal, or run:
+docker-compose down
+```
+
+## ⚡ Features
+- **🔐 User Authentication**: Secure JWT-based login system
+- **📝 Moment Management**: Create, edit, delete personal moments
+- **🖼️ Image Upload**: Store images with your moments
+- **💾 PostgreSQL Database**: Persistent data storage
+- **📱 Responsive UI**: Works on desktop and mobile
+
+## 🐞 Troubleshooting
+
+### Common Issues
+
+- **Port already in use**: Change the port in `docker-compose.yml`:
+  ```yaml
+  ports:
+    - "8081:80"  # Use port 8081 instead
+  ```
+
+- **Submodules not found**: If you cloned without `--recurse-submodules`:
+  ```bash
+  git submodule update --init --recursive
+  ```
+
+- **Docker build fails**: Try a clean build:
+  ```bash
+  docker-compose down -v
+  docker-compose up --build --no-cache
+  ```
+
+### Database Access
+Access the PostgreSQL database directly:
+```bash
+docker-compose exec db psql -U mkm_user -d mkm_db
+```
+
+---
+
+# 🛠️ Advanced Setup & Development
+
+For detailed Docker instructions, production deployment, and development setup, see [README.Docker.md](README.Docker.md).
+
+<details>
+<summary>📋 Manual Setup (Advanced Users)</summary>
+### Running front end
+Install required packages and run the frontend locally
 ```
 npm install
 npm run dev
 ```
+
+</details>
