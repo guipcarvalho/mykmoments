@@ -12,7 +12,7 @@ This guide provides instructions for running MyKMoments using Docker, which simp
 
 1. **Clone the repository with submodules:**
    ```bash
-   git clone --recurse-submodules https://github.com/Shriram-Vatturkar/mykmoments.git
+   git clone --recurse-submodules https://github.com/guipcarvalho/mykmoments
    cd mykmoments
    ```
 
